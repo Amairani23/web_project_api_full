@@ -1,0 +1,25 @@
+export default function Popup(props) {
+  //los hijos son el contenido de la ventana emergente
+  const { onClose, title, children } = props;
+
+  return (
+    <div className="popup popup_is-opened">
+      <div
+        className={`popup__content ${
+          !title ? "popup__content_content_image" : ""
+        }`}
+      >
+        <button
+          aria-label="Close modal"
+          className="popup__close"
+          type="button"
+          onClick={onClose}
+        />
+
+        {title && <h3 className="popup__title">{title}</h3>}
+
+        {children}
+      </div>
+    </div>
+  );
+}

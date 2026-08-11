@@ -1,0 +1,155 @@
+.header {
+  min-height: 120px;
+  font-family: "Inter", Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+}
+
+.header__logo {
+  width: 173px;
+  height: 33px;
+  object-fit: contain;
+}
+
+
+.nav__content {
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+/* Listas */
+.nav__links {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  align-items: center;
+  position: sticky;
+  top: 0;
+}
+
+.nav__item {
+  margin-right: 40px;
+}
+
+.nav__link {
+  font-family: "RalewayLigth", Arial, sans-serif;
+  font-weight: lighter;
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.nav__link-cs{
+  color: #A9A9A9;
+}
+
+
+.menu-bar {
+  display: none;
+}
+
+.menu-bar-label {
+  cursor: pointer;
+  text-align: end;
+  display: block;
+}
+
+.icon-menu {
+  display: block;
+}
+
+
+.menu-bar:checked + .menu-bar-label .icon-menu {
+  display: none;
+}
+
+.menu-bar:checked + .menu-bar-label .icon-close {
+  display: block;
+}
+
+
+
+@media screen and (max-width: 1024px) {
+  .nav__item {
+    margin-right: 20px;
+  }
+
+  .nav__content {
+    padding: 20px;
+  }
+}
+
+
+
+
+.menu-bar-label {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .menu-bar-label {
+    display: block;
+    margin-right: 30px;
+    margin-bottom: 60px;
+    text-align: -webkit-right;
+  }
+
+  .nav__content {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 97%;
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+  }
+
+  .nav__links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #000;
+    padding: 20px 0;
+    text-align: center;
+  }
+
+  .nav__links--open {
+    display: flex;
+  }
+
+  .nav__item {
+    width: 100%;
+    padding: 30px 0;
+    margin: 0;
+  }
+} 
+
+
+@media screen and (max-width: 544px) {
+  .header {
+    min-height: 85px;
+  }
+
+  .header__logo {
+    width: 126px;
+    height: 24px;
+    margin: 0 0 0 7px;
+  }
+}
+  
+
+
+
+  
+
