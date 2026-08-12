@@ -4,9 +4,8 @@ import jwt from 'jsonwebtoken';
 
 const ERROR_BAD_REQUEST = 400;
 const ERROR_NOT_FOUND = 404;
-const ERROR_SERVER = 500;
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
   try {
     const { name, about, avatar, email, password } = req.body;
 
@@ -25,19 +24,11 @@ export const createUser = async (req, res) => {
       newUser,
     });
   } catch (error) {
-    if (error.name === "ValidationError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: error.message });
-    }
-
-    if (error.statusCode === ERROR_NOT_FOUND) {
-      return res.status(ERROR_NOT_FOUND).send({ message: error.message });
-    }
-
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+    next(error);
   }
 };
 
-export const login = async(req, res) => {
+export const login = async(req, res, next) => {
   try{
     const { email, password } = req.body;
 
@@ -72,13 +63,12 @@ export const login = async(req, res) => {
       token
      });
 
-  }
-  catch (error) {
-    return res.status(ERROR_SERVER).send({ message: 'An error occurred while logging in.' });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const getUser = async (req, res) => {
+export const getUser = async (req, res, next) => {
   try {
     const users = await User.find({});
 
@@ -86,15 +76,12 @@ export const getUser = async (req, res) => {
       message: "OK, when showing users",
       data: users,
     });
-  } catch (err) {
-    if (err.name === "CastError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: err.message });
-    }
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const getUserId = async (req, res) => {
+export const getUserId = async (req, res, next) => {
   try {
     const { userId } = req.params;
 
@@ -108,20 +95,12 @@ export const getUserId = async (req, res) => {
       message: "OK, when showing users",
       data: user,
     });
-  } catch (err) {
-    if (err.name === "CastError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: err.message });
-    }
-
-    if (err.statusCode === ERROR_NOT_FOUND) {
-      return res.status(ERROR_NOT_FOUND).send({ message: err.message });
-    }
-
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const patchUser = async (req, res) => {
+export const patchUser = async (req, res, next) => {
   try {
     const { name, about } = req.body;
 
@@ -139,20 +118,12 @@ export const patchUser = async (req, res) => {
       message: "OK, when showing users",
       data: user,
     });
-  } catch (err) {
-    if (err.name === "ValidationError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: err.message });
-    }
-
-    if (err.statusCode === ERROR_NOT_FOUND) {
-      return res.status(ERROR_NOT_FOUND).send({ message: err.message });
-    }
-
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const patchUserAvatar = async (req, res) => {
+export const patchUserAvatar = async (req, res, next) => {
   try {
     const { avatar } = req.body;
 
@@ -170,17 +141,8 @@ export const patchUserAvatar = async (req, res) => {
       message: "OK, when showing users",
       data: user,
     });
-  } catch (err) {
-    if (err.name === "ValidationError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: err.message });
-    }
-
-    if (err.statusCode === ERROR_NOT_FOUND) {
-      return res.status(ERROR_NOT_FOUND).send({ message: err.message });
-    }
-
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+  } catch (error) {
+    next(error);
   }
 };
-
 

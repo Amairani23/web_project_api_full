@@ -2,13 +2,14 @@ import express from "express";
 import mongoose from "mongoose";
 
 import {login, createUser, getUserId} from './controllers/usersControllers.js'
+import { errorHandler } from "./middlewares/error-handler.js";
+import {auth} from "./middlewares/auth.js";
+import { requestLogger, errorLogger } from "./middlewares/logger.js";
 
 import 'dotenv/config';
 
-
 const app = express();
 const { PORT = 3000 } = process.env;
-const auth = require('./middleware/auth');
 
 app.use(express.json());
 
@@ -23,19 +24,16 @@ mongoose
     process.exit(1);
   });
 
+app.use(requestLogger);
 
 app.post('/signin', login);
 app.post('/signup', createUser);
-
 app.get('/users/me', getUserId);
 
 app.use(auth);
 
-app.use((req, res) => {
-  res.status(404).send({
-    message: "Recurso solicitado no encontrado",
-  });
-});
+app.use(errorLogger);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
