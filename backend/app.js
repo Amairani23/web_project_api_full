@@ -28,7 +28,7 @@ app.use(requestLogger);
 
 app.post('/signin', login);
 app.post('/signup', createUser);
-app.get('/users/me', getUserId);
+app.get('/users/me/:userId', getUserId);
 
 app.use(auth);
 
