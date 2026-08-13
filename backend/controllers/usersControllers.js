@@ -9,19 +9,32 @@ export const createUser = async (req, res, next) => {
   try {
     const { name, about, avatar, email, password } = req.body;
 
+     if(!email || !password){
+      return res.status(ERROR_BAD_REQUEST).send({ message: 'All fields are mandatory.' });
+    }
+
+    const existingUser = await User.findOne({
+      email,
+    });
+
+    if (existingUser) {
+      return res.status(ERROR_BAD_REQUEST).send({ message: "Email already exists." });
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
     const newUser = new User({
       name,
       about,
       avatar,
       email,
-      password
+      password: hashPassword,
     });
 
     await newUser.save();
 
     res.status(201).send({
-      message: "Create",
-      newUser,
+      message: "Create user",
     });
   } catch (error) {
     next(error);
@@ -36,17 +49,17 @@ export const login = async(req, res, next) => {
       return res.status(401).send({ message: 'All fields are mandatory.' });
     }
 
-    const user = await User.findOne({email}).select('password');
+    const user = await User.findOne({email}).select('+password');
 
     if(!user){
       return res.status(ERROR_BAD_REQUEST).send({ message: "Incorrect email or password." });
     }
 
-    //const passwordIsCorrect = await bcrypt.compare(password, user.password);
+    const passwordIsCorrect = await bcrypt.compare(password, user.password)
 
-    //if(!passwordIsCorrect){
-      //return res.status(ERROR_BAD_REQUEST).send({ message: "Incorrect email or password." });
-    //}
+    if(!passwordIsCorrect){
+      return res.status(ERROR_BAD_REQUEST).send({ message: "Incorrect email or password." });
+    }
 
     const token = jwt.sign(
       {
@@ -64,7 +77,6 @@ export const login = async(req, res, next) => {
      });
 
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
