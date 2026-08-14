@@ -1,5 +1,5 @@
 
-export const BASE_URL = "https://se-register-api.en.tripleten-services.com/v1";
+export const BASE_URL = "https://api.inariama.mooo.com";
 
 
 export const register = (data) => {

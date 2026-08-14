@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import cors from 'cors';
 
 import {login, createUser, getUserId} from './controllers/usersControllers.js'
 import { errorHandler } from "./middlewares/error-handler.js";
@@ -12,6 +13,15 @@ const app = express();
 const { PORT = 3000 } = process.env;
 
 app.use(express.json());
+
+const allowedOrigins = [
+  "https://inariama.mooo.com",
+  "https://www.inariama.mooo.com"
+];
+
+app.use(cors({
+  origin: allowedOrigins
+}));
 
 // Conectar con MongoDB
 mongoose
