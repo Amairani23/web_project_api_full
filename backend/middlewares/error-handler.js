@@ -6,19 +6,19 @@ const ERROR_SERVER = 500;
 export const errorHandler = (err, req, res, next) => {
   if (err.name === "ValidationError" || err.name === "CastError") {
     return res.status(ERROR_BAD_REQUEST).send({
-      message: err.message,
+      message: 'Bad Request',
     });
   }
 
   if (err.statusCode === ERROR_UNAUTHORIZED) {
     return res.status(ERROR_UNAUTHORIZED).send({
-      message: err.message,
+      message: 'Unauthorized',
     });
   }
 
   if (err.statusCode === ERROR_NOT_FOUND) {
     return res.status(ERROR_NOT_FOUND).send({
-      message: err.message,
+      message: 'Not Found',
     });
   }
 

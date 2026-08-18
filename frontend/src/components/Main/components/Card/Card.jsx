@@ -2,8 +2,8 @@ import ImagePopup from "../ImagePopup/ImagePopup";
 import RemoveCard from "../RemoveCard/RemoveCard";
 
 export default function Card(props) {
-  const { name, link, isLiked } = props.card;
-  const { onOpenPopup, onCardLike, onCardDelete } = props;
+  const { name, link, likes } = props.card;
+  const { onOpenPopup, onCardLike, onCardDelete, currentUser } = props;
 
   const imageComponent = {
     children: <ImagePopup card={props.card} />,
@@ -14,7 +14,7 @@ export default function Card(props) {
   };
 
   const cardLikeButtonClassName = `card__like-button ${
-    isLiked ? "card__like-button_is-active" : ""
+    likes.includes(currentUser._id) ? "card__like-button_is-active" : ""
   }`;
 
   function handleLikeClick() {

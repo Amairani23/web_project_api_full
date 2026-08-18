@@ -115,6 +115,7 @@ const handleLogout = () => {
   api.getUserInfo()
     .then((data) => {
         setCurrentUser(data);
+        console.log(data);
       })
     .catch(console.error);
 
@@ -125,22 +126,28 @@ const handleLogout = () => {
     .catch(console.error);
 }, [isLoggedIn]);
 
-  async function handleCardLike(card) {
-    // Verifica una vez más si a esta tarjeta ya les has dado like
-    const isLiked = card.isLiked;
 
-    // Envía una solicitud a la API y obtén los datos actualizados de la tarjeta
-    await api
-      .changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard,
-          ),
-        );
-      })
-      .catch((error) => console.error(error));
+async function handleCardLike(card) {
+  if (!currentUser._id) return;
+  
+  const isLiked = card.likes.includes(currentUser._id);
+
+  try {
+    const newCard = await api.changeLikeCardStatus(
+      card._id,
+      !isLiked,
+    );
+
+    setCards((state) =>
+      state.map((currentCard) =>
+        currentCard._id === card._id ? newCard : currentCard,
+      ),
+    );
+  } catch (error) {
+    console.error(error);
   }
+}
+  
 
   async function handleCardDelete(card) {
     // Envía una solicitud a la API y obtén los datos actualizados de la tarjeta
@@ -232,6 +239,7 @@ const handleLogout = () => {
             cards={cards}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}
+            currentUser={currentUser}
           />
           </ProtectedRoute>
           }/>

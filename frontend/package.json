@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && scp -r ./dist/* 12romeroamairani@35.224.96.129:/home/12romeroamairani/frontend"
   },
   "dependencies": {
     "react": "^19.2.7",
@@ -26,4 +27,5 @@
     "globals": "^17.7.0",
     "vite": "^8.1.1"
   }
+  
 }

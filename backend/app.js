@@ -6,6 +6,8 @@ import {login, createUser, getUserId} from './controllers/usersControllers.js'
 import { errorHandler } from "./middlewares/error-handler.js";
 import {auth} from "./middlewares/auth.js";
 import { requestLogger, errorLogger } from "./middlewares/logger.js";
+import usersRouter from './routes/usersRouter.js';
+import cardsRouter from './routes/cardsRouter.js';
 
 import 'dotenv/config';
 
@@ -36,11 +38,19 @@ mongoose
 
 app.use(requestLogger);
 
+// app.get('/crash-test', () => {
+//   setTimeout(() => {
+//     throw new Error('El servidor va a caer');
+//   }, 0);
+// });
+
 app.post('/signin', login);
 app.post('/signup', createUser);
-app.get('/users/me/:userId', getUserId);
 
 app.use(auth);
+
+app.use('/', usersRouter);
+app.use('/', cardsRouter);
 
 app.use(errorLogger);
 app.use(errorHandler);

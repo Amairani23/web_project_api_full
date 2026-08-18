@@ -1,12 +1,22 @@
+import { getToken } from "./token";
+import { BASE_URL } from "./auth";
+
 class Api {
   constructor(options) {
     this.baseUrl = options.baseUrl;
     this.headers = options.headers;
   }
 
+  _getHeaders() {
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getToken()}`,
+  };
+}
+
   // Muestra información del usuario
   getUserInfo() {
-    return fetch(`${this.baseUrl}/users/me`, {
+    return fetch(`${this.baseUrl}/users`, {
       headers: this.headers,
     }).then((res) => {
       if (res.ok) {
@@ -121,11 +131,9 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://around-api.es.tripleten-services.com/v1",
-  headers: {
-    authorization: "41863ac7-76e4-4b02-83ad-41a05f0c7f79",
-    "Content-Type": "application/json",
-  },
+  baseUrl: BASE_URL,
 });
+
+
 
 export default api;

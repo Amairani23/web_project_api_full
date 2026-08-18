@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 
 const ERROR_BAD_REQUEST = 400;
 const ERROR_NOT_FOUND = 404;
+const ERROR_CONFLICT = 409;
 
 export const createUser = async (req, res, next) => {
   try {
@@ -18,7 +19,7 @@ export const createUser = async (req, res, next) => {
     });
 
     if (existingUser) {
-      return res.status(ERROR_BAD_REQUEST).send({ message: "Email already exists." });
+      return res.status(ERROR_CONFLICT).send({ message: "The email address is already registered." });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -63,7 +64,7 @@ export const login = async(req, res, next) => {
 
     const token = jwt.sign(
       {
-        userId: user._id,
+        _id: user._id,
       },
       process.env.JWT_SECRET,
       {
@@ -99,6 +100,25 @@ export const getUserId = async (req, res, next) => {
     const { userId } = req.params;
 
     const user = await User.findById(userId).orFail(() => {
+      const error = new Error("User not found");
+      error.statusCode = ERROR_NOT_FOUND;
+      throw error;
+    });
+
+    res.status(200).json({
+      message: "OK, when showing users",
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCurrentUser = async (req, res, next) => {
+  try {
+    const { id } = req.user._id;
+
+    const user = await User.findById(id).orFail(() => {
       const error = new Error("User not found");
       error.statusCode = ERROR_NOT_FOUND;
       throw error;

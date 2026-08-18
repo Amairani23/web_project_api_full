@@ -1,10 +1,9 @@
 import Card from "../models/card.js";
 
-const ERROR_BAD_REQUEST = 400;
+const ERROR_FORBIDDEN = 403;
 const ERROR_NOT_FOUND = 404;
-const ERROR_SERVER = 500;
 
-export const postCard = async (req, res) => {
+export const postCard = async (req, res, next) => {
   try {
     const { name, link } = req.body;
 
@@ -21,19 +20,11 @@ export const postCard = async (req, res) => {
       newCard,
     });
   } catch (error) {
-    if (error.name === "ValidationError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: error.message });
-    }
-
-    if (error.statusCode === ERROR_NOT_FOUND) {
-      return res.status(ERROR_NOT_FOUND).send({ message: error.message });
-    }
-
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+    next(error);
   }
 };
 
-export const getCard = async (req, res) => {
+export const getCard = async (req, res, next) => {
   try {
     const cards = await Card.find({});
 
@@ -41,43 +32,39 @@ export const getCard = async (req, res) => {
       message: "OK, when showing cards",
       data: cards,
     });
-  } catch (err) {
-    if (err.name === "CastError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: err.message });
-    }
-
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const deleteCard = async (req, res) => {
+export const deleteCard = async (req, res, next) => {
   try {
     const { cardId } = req.params;
 
-    const card = await Card.findByIdAndDelete(cardId).orFail(() => {
+    //primero buscar la tarjeta, comparar el owner con el usuario autenticado
+    const card = await Card.findById(cardId).orFail(() => {
       const error = new Error("Card not found");
       error.statusCode = ERROR_NOT_FOUND;
       throw error;
     });
 
+    if (card.owner.toString() !== req.user._id.toString()) {
+      return res.status(ERROR_FORBIDDEN).send({ message: "You cannot delete another user's cards." });
+    }
+
+    await card.deleteOne();
+
     res.status(200).json({
       message: "Card removed successfully",
       data: card,
     });
-  } catch (err) {
-    if (err.name === "CastError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: err.message });
-    }
 
-    if (err.statusCode === ERROR_NOT_FOUND) {
-      return res.status(ERROR_NOT_FOUND).send({ message: err.message });
-    }
-
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const likeCard = async (req, res) => {
+export const likeCard = async (req, res, next) => {
   try {
     const { cardId } = req.params;
 
@@ -95,20 +82,12 @@ export const likeCard = async (req, res) => {
       message: "Like added successfully",
       data: card,
     });
-  } catch (err) {
-    if (err.name === "CastError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: err.message });
-    }
-
-    if (err.statusCode === ERROR_NOT_FOUND) {
-      return res.status(ERROR_NOT_FOUND).send({ message: err.message });
-    }
-
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const dislikeCard = async (req, res) => {
+export const dislikeCard = async (req, res, next) => {
   try {
     const { cardId } = req.params;
 
@@ -126,15 +105,7 @@ export const dislikeCard = async (req, res) => {
       message: "Like successfully removed",
       data: card,
     });
-  } catch (err) {
-    if (err.name === "CastError") {
-      return res.status(ERROR_BAD_REQUEST).send({ message: err.message });
-    }
-
-    if (err.statusCode === ERROR_NOT_FOUND) {
-      return res.status(ERROR_NOT_FOUND).send({ message: err.message });
-    }
-
-    return res.status(ERROR_SERVER).send({ message: "An error has ocurred on the server" });
+  } catch (error) {
+    next(error);
   }
 };

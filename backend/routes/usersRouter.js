@@ -8,6 +8,7 @@ import {
   patchUser,
   patchUserAvatar,
   createUser,
+  getCurrentUser
 } from "../controllers/usersControllers.js";
 
 const router = express.Router();
@@ -38,6 +39,9 @@ router.post(
 
 //Mostrar usuarios
 router.get("/users", getUser);
+
+//Mostrar usuarios
+router.get("/users/me/:id", getCurrentUser);
 
 // Mostrar usuario por ID
 router.get(
