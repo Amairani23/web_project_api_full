@@ -15,7 +15,7 @@ class Api {
 
   // Muestra información del usuario
   getUserInfo() {
-    return fetch(`${this.baseUrl}/users`, {
+    return fetch(`${this.baseUrl}/users/me`, {
       headers: this._getHeaders(),
     }).then((res) => {
       if (res.ok) {
@@ -38,8 +38,8 @@ class Api {
   }
 
   // Edita información del usuario
-  updateUserInfo(userData) {
-    return fetch(`${this.baseUrl}/users/me`, {
+  updateUserInfo(userData, cardId) {
+    return fetch(`${this.baseUrl}/users/${cardId}`, {
       method: "PATCH",
       headers: this._getHeaders(),
       body: JSON.stringify({
