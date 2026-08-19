@@ -41,7 +41,7 @@ router.post(
 router.get("/users", getUser);
 
 //Mostrar usuarios
-router.get("/users/me/:id", getCurrentUser);
+router.get("/users/me", getCurrentUser);
 
 // Mostrar usuario por ID
 router.get(

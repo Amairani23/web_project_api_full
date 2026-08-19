@@ -116,7 +116,7 @@ export const getUserId = async (req, res, next) => {
 
 export const getCurrentUser = async (req, res, next) => {
   try {
-    const { id } = req.user._id;
+    const id  = req.user._id;
 
     const user = await User.findById(id).orFail(() => {
       const error = new Error("User not found");
@@ -124,10 +124,7 @@ export const getCurrentUser = async (req, res, next) => {
       throw error;
     });
 
-    res.status(200).json({
-      message: "OK, when showing users",
-      data: user,
-    });
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }

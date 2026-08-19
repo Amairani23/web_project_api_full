@@ -90,6 +90,8 @@ function App() {
       console.log(err);
       removeToken();
     });
+
+  
 }, [navigate]); //si usas algo externo dentro del efecto, debes declararlo como dependencia
 
 const handleLogout = () => {
@@ -114,8 +116,8 @@ const handleLogout = () => {
 
   api.getUserInfo()
     .then((data) => {
+      console.log("RESPUESTA API:", data);
         setCurrentUser(data);
-        console.log(data);
       })
     .catch(console.error);
 

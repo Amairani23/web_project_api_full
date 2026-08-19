@@ -13,7 +13,7 @@ class Api {
   };
 }
 
-  // Muestra información del usuario
+  //Muestra información del usuario
   getUserInfo() {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: this._getHeaders(),
@@ -24,6 +24,7 @@ class Api {
       return Promise.reject(`Error: ${res.status}`);
     });
   }
+
 
   // Muestra las tarjetas
   getInitialCards() {
@@ -38,8 +39,8 @@ class Api {
   }
 
   // Edita información del usuario
-  updateUserInfo(userData, cardId) {
-    return fetch(`${this.baseUrl}/users/${cardId}`, {
+  updateUserInfo(userData) {
+    return fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._getHeaders(),
       body: JSON.stringify({
