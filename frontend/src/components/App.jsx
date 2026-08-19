@@ -75,7 +75,6 @@ function App() {
   if (!jwt) {
     return;
   }
-
    // Llama a la función, pasándole el JWT.
   auth
     .checkToken(jwt)
@@ -91,7 +90,6 @@ function App() {
       removeToken();
     });
 
-  
 }, [navigate]); //si usas algo externo dentro del efecto, debes declararlo como dependencia
 
 const handleLogout = () => {

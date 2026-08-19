@@ -10,10 +10,6 @@ export default function Main(props) {
     props;
 
   const { currentUser } = useContext(CurrentUserContext);
-  console.log("currentUser:", currentUser);
-console.log("name:", currentUser.name);
-console.log("about:", currentUser.about);
-console.log("avatar:", currentUser.avatar);
 
   const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
   const editProfilePopup = {

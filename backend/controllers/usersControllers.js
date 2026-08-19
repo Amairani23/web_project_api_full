@@ -34,9 +34,7 @@ export const createUser = async (req, res, next) => {
 
     await newUser.save();
 
-    res.status(201).send({
-      message: "Create user",
-    });
+    res.status(201).send(newUser);
   } catch (error) {
     next(error);
   }
@@ -86,10 +84,7 @@ export const getUser = async (req, res, next) => {
   try {
     const users = await User.find({});
 
-    res.status(200).json({
-      message: "OK, when showing users",
-      data: users,
-    });
+    res.status(200).json(users);
   } catch (error) {
     next(error);
   }
@@ -105,10 +100,7 @@ export const getUserId = async (req, res, next) => {
       throw error;
     });
 
-    res.status(200).json({
-      message: "OK, when showing users",
-      data: user,
-    });
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -144,10 +136,7 @@ export const patchUser = async (req, res, next) => {
       throw error;
     });
 
-    res.status(200).json({
-      message: "OK, when showing users",
-      data: user,
-    });
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -167,10 +156,7 @@ export const patchUserAvatar = async (req, res, next) => {
       throw error;
     });
 
-    res.status(200).json({
-      message: "OK, when showing users",
-      data: user,
-    });
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }

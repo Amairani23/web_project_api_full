@@ -15,10 +15,7 @@ export const postCard = async (req, res, next) => {
 
     await newCard.save();
 
-    res.status(201).send({
-      message: "Created",
-      newCard,
-    });
+    res.status(201).send(newCard);
   } catch (error) {
     next(error);
   }
@@ -28,10 +25,7 @@ export const getCard = async (req, res, next) => {
   try {
     const cards = await Card.find({});
 
-    res.status(200).json({
-      message: "OK, when showing cards",
-      data: cards,
-    });
+    res.status(200).json(cards);
   } catch (error) {
     next(error);
   }
@@ -54,10 +48,7 @@ export const deleteCard = async (req, res, next) => {
 
     await card.deleteOne();
 
-    res.status(200).json({
-      message: "Card removed successfully",
-      data: card,
-    });
+    res.status(200).json(card);
 
   } catch (error) {
     next(error);
@@ -78,10 +69,7 @@ export const likeCard = async (req, res, next) => {
       throw error;
     });
 
-    res.status(200).json({
-      message: "Like added successfully",
-      data: card,
-    });
+    res.status(200).json(card);
   } catch (error) {
     next(error);
   }
@@ -101,10 +89,7 @@ export const dislikeCard = async (req, res, next) => {
       throw error;
     });
 
-    res.status(200).json({
-      message: "Like successfully removed",
-      data: card,
-    });
+    res.status(200).json(card);
   } catch (error) {
     next(error);
   }
