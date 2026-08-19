@@ -15,14 +15,21 @@ export default function NewCard() {
   }`;
 
   const handleTitleChange = (event) => {
-    if (event.target.value.length < 3) {
-      settitleRefError("Error: debe tener más de 2 caracteres y menos de 40");
-    } else {
-      settitleRefError("");
-    }
-  };
+  if (!event.target.value) {
+    settitleRefError(" ");
+  } else if (event.target.value.length < 3) {
+    settitleRefError("Error: debe tener más de 2 caracteres y menos de 40");
+  } else {
+    settitleRefError("");
+  }
+};
 
   const handleImageChange = () => {
+     if (!urlRef.current.value) {
+    seturlRefError(" ");
+    return;
+  }
+  
     try {
       new URL(urlRef.current.value); // Si esto falla, salta al catch
       // URL válida → ¿qué harías aquí?
@@ -70,7 +77,7 @@ export default function NewCard() {
         onChange={handleImageChange}
       />
       <span className="url-input-error form__input-error">{urlRefError}</span>
-      <button className={newButtonClassName} type="submit">
+      <button className={newButtonClassName} type="submit" >
         {louding}
       </button>
     </form>

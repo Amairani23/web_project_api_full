@@ -78,7 +78,7 @@ function App() {
    // Llama a la función, pasándole el JWT.
   auth
     .checkToken(jwt)
-    .then(({ data }) => {
+    .then((data) => {
       // si la respuesta es exitosa, inicia la sesión del usuario, guarda sus
       // datos en el estado y lo dirige a /ducks.
       setIsLoggedIn(true);
@@ -114,7 +114,6 @@ const handleLogout = () => {
 
   api.getUserInfo()
     .then((data) => {
-      console.log("RESPUESTA API:", data);
         setCurrentUser(data);
       })
     .catch(console.error);
