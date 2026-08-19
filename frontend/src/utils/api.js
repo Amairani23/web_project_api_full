@@ -4,7 +4,6 @@ import { BASE_URL } from "./auth";
 class Api {
   constructor(options) {
     this.baseUrl = options.baseUrl;
-    this.headers = options.headers;
   }
 
   _getHeaders() {
@@ -17,7 +16,7 @@ class Api {
   // Muestra información del usuario
   getUserInfo() {
     return fetch(`${this.baseUrl}/users`, {
-      headers: this.headers,
+      headers: this._getHeaders(),
     }).then((res) => {
       if (res.ok) {
         return res.json();
@@ -29,7 +28,7 @@ class Api {
   // Muestra las tarjetas
   getInitialCards() {
     return fetch(`${this.baseUrl}/cards`, {
-      headers: this.headers,
+      headers: this._getHeaders(),
     }).then((res) => {
       if (res.ok) {
         return res.json();
@@ -42,7 +41,7 @@ class Api {
   updateUserInfo(userData) {
     return fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
-      headers: this.headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({
         name: userData.name,
         about: userData.about,
@@ -59,7 +58,7 @@ class Api {
   updateAvatar(avatarData) {
     return fetch(`${this.baseUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this.headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({
         avatar: avatarData.avatar,
       }),
@@ -75,7 +74,7 @@ class Api {
   addCard(cardData) {
     return fetch(`${this.baseUrl}/cards`, {
       method: "POST",
-      headers: this.headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({
         name: cardData.name,
         link: cardData.link,
@@ -92,7 +91,7 @@ class Api {
   deleteCard(cardId) {
     return fetch(`${this.baseUrl}/cards/${cardId}`, {
       method: "DELETE",
-      headers: this.headers,
+      headers: this._getHeaders(),
     }).then((res) => {
       if (res.ok) return res.json();
       return Promise.reject(`Error: ${res.status}`);
@@ -103,7 +102,7 @@ class Api {
   addLike(cardId) {
     return fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
       method: "PUT",
-      headers: this.headers,
+      headers: this._getHeaders(),
     }).then((res) => {
       if (res.ok) return res.json();
       return Promise.reject(`Error: ${res.status}`);
@@ -114,7 +113,7 @@ class Api {
   removeLike(cardId) {
     return fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
       method: "DELETE",
-      headers: this.headers,
+      headers: this._getHeaders(),
     }).then((res) => {
       if (res.ok) return res.json();
       return Promise.reject(`Error: ${res.status}`);

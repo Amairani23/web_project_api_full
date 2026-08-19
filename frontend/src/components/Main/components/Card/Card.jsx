@@ -1,9 +1,12 @@
 import ImagePopup from "../ImagePopup/ImagePopup";
 import RemoveCard from "../RemoveCard/RemoveCard";
+import CurrentUserContext from "../../../../contexts/CurrentUserContext";
 
 export default function Card(props) {
   const { name, link, likes } = props.card;
-  const { onOpenPopup, onCardLike, onCardDelete, currentUser } = props;
+  const { onOpenPopup, onCardLike, onCardDelete } = props;
+
+  const { currentUser } = useContext(CurrentUserContext);
 
   const imageComponent = {
     children: <ImagePopup card={props.card} />,

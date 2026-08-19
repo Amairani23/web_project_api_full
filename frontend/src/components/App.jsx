@@ -239,7 +239,6 @@ async function handleCardLike(card) {
             cards={cards}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}
-            currentUser={currentUser}
           />
           </ProtectedRoute>
           }/>
