@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const ERROR_BAD_REQUEST = 400;
+const ERROR_UNAUTHORIZED = 401;
 const ERROR_NOT_FOUND = 404;
 const ERROR_CONFLICT = 409;
 
@@ -51,13 +52,13 @@ export const login = async(req, res, next) => {
     const user = await User.findOne({email}).select('+password');
 
     if(!user){
-      return res.status(ERROR_BAD_REQUEST).send({ message: "Incorrect email or password." });
+      return res.status(ERROR_UNAUTHORIZED).send({ message: "Incorrect email or password." });
     }
 
     const passwordIsCorrect = await bcrypt.compare(password, user.password)
 
     if(!passwordIsCorrect){
-      return res.status(ERROR_BAD_REQUEST).send({ message: "Incorrect email or password." });
+      return res.status(ERROR_UNAUTHORIZED).send({ message: "Incorrect email or password." });
     }
 
     const token = jwt.sign(
